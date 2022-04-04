@@ -1,4 +1,4 @@
-# CSC8502-2021
+# CSC8502
 Keyboard :  
 W A S D ----- camera : front left back right  
 Shift ----- camera go up  
