@@ -1,0 +1,13 @@
+﻿  BlankProject.cpp
+C:\Users\10216\Desktop\CSC8502_2021\CSC8502 2021\NCLGL\Light.h(2,9): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
+C:\Users\10216\Desktop\CSC8502_2021\CSC8502 2021\NCLGL\Light.h(3,9): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
+  Renderer.cpp
+C:\Users\10216\Desktop\CSC8502_2021\CSC8502 2021\nclgl\Light.h(2,9): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
+C:\Users\10216\Desktop\CSC8502_2021\CSC8502 2021\nclgl\Light.h(3,9): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
+C:\Users\10216\Desktop\CSC8502_2021\CSC8502 2021\Blank Project\Renderer.cpp(58,64): warning C4244: “参数”: 从“double”转换到“const float”，可能丢失数据
+C:\Users\10216\Desktop\CSC8502_2021\CSC8502 2021\Blank Project\Renderer.cpp(72,11): warning C4244: “参数”: 从“int”转换到“const float”，可能丢失数据
+C:\Users\10216\Desktop\CSC8502_2021\CSC8502 2021\Blank Project\Renderer.cpp(70,31): warning C4244: “参数”: 从“int”转换到“const float”，可能丢失数据
+C:\Users\10216\Desktop\CSC8502_2021\CSC8502 2021\Blank Project\Renderer.cpp(87,11): warning C4244: “参数”: 从“int”转换到“const float”，可能丢失数据
+C:\Users\10216\Desktop\CSC8502_2021\CSC8502 2021\Blank Project\Renderer.cpp(85,31): warning C4244: “参数”: 从“int”转换到“const float”，可能丢失数据
+  正在生成代码...
+  BlankProject.vcxproj -> C:\Users\10216\Desktop\CSC8502_2021\CSC8502 2021\x64\Debug\Blank Project.exe
