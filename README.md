@@ -8,3 +8,5 @@ F5 ---- refresh shader
 H/J ----- +/- intensity  
 L ------ change multiple Light  
 M ----- change auto camera  
+
+https://youtu.be/QzBsruqkruc
