@@ -6,11 +6,12 @@ bool Frustum::InsideFrustum(SceneNode& n) {
 	for (int p = 0; p < 6; ++p) {
 		if (!plane[p].SphereInPlane(n.GetWorldTransform().GetPositionVector(), n.GetBoundingRadius())) {
 			return false;
-
+			 
 		}
-		return true;
-
 	}
+
+	return true;
+	
 
 }
 
@@ -21,10 +22,10 @@ void Frustum::FromMatrix(const Matrix4& mat) {
 	Vector3 waxis = Vector3(mat.values[3], mat.values[7], mat.values[11]);
 
 	plane[0] = Plane(waxis - xaxis, (mat.values[15] - mat.values[12]), true);
-	plane[1] = Plane(waxis + xaxis, (mat.values[15] - mat.values[12]), true);
-	plane[2] = Plane(waxis + yaxis, (mat.values[15] - mat.values[13]), true);
+	plane[1] = Plane(waxis + xaxis, (mat.values[15] + mat.values[12]), true);
+	plane[2] = Plane(waxis + yaxis, (mat.values[15] + mat.values[13]), true);
 	plane[3] = Plane(waxis - yaxis, (mat.values[15] - mat.values[13]), true);
-	plane[4] = Plane(waxis + zaxis, (mat.values[15] - mat.values[14]), true);
+	plane[4] = Plane(waxis + zaxis, (mat.values[15] + mat.values[14]), true);
 	plane[5] = Plane(waxis - zaxis, (mat.values[15] - mat.values[14]), true);
 
 

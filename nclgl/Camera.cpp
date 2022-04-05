@@ -3,8 +3,6 @@
 #include<algorithm>
 void Camera::UpdateCamera(float dt) {
 
-
-
 	if (!autocamera) {
 		pitch -= (Window::GetMouse()->GetRelativePosition().y);
 		yaw -= (Window::GetMouse()->GetRelativePosition().x);
@@ -54,8 +52,6 @@ void Camera::UpdateCamera(float dt) {
 	}
 	
 	else {
-		pitch = 0.0f;
-		yaw = 45.0f;
 
 		pitch = std::min(pitch, 90.0f);
 		pitch = std::max(pitch, -90.0f);
@@ -119,6 +115,10 @@ void Camera::UpdateCamera(float dt) {
 }
 
 Matrix4 Camera::BuildViewMatrix() {
+	Matrix4 r1 = Matrix4::Rotation(-pitch, Vector3(1, 0, 0));
+	Matrix4 r2 = Matrix4::Rotation(-yaw, Vector3(0, 1, 0));
+	Matrix4 r3 = Matrix4::Translation(-position);
+	Matrix4 r4 = r1 * r2 * r3;
 	return Matrix4::Rotation(-pitch, Vector3(1, 0, 0)) *
 		Matrix4::Rotation(-yaw, Vector3(0, 1, 0)) *
 		Matrix4::Translation(-position);

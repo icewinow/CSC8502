@@ -15,6 +15,7 @@ public:
 		this->position = position;
 		this->gox = true;
 		this->goz = true;
+		this->autocamera = true;
 
 	}
 	~Camera(void) {};

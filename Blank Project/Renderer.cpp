@@ -42,7 +42,7 @@ Renderer::Renderer(Window& parent) :OGLRenderer(parent) {
 
 	Vector3 heightmapSize = heightMap->GetHeightmapSize();
 
-	camera = new Camera(-45.0f, 0.0f, heightmapSize * Vector3(0.5f, 2.0f, 0.5f));
+	camera = new Camera(-45.0f, 0.0f, Vector3(0,3000,0));
 	camera->SetMinx(heightmapSize.x * 0.1f);
 	camera->SetMinz(heightmapSize.z * 0.1f);
 	camera->SetMaxx(heightmapSize.x);
@@ -52,10 +52,17 @@ Renderer::Renderer(Window& parent) :OGLRenderer(parent) {
 	pointLights = new Light[LIGHT_NUM];
 
 	root = new SceneNode();
+	root->SetColour(Vector4(1.0f, 1.0f, 1.0f, 255.0f));
+	root->SetTransform(Matrix4::Translation(Vector3(heightmapSize.x * 0.3, heightmapSize.y * 0.6f, heightmapSize.z * 0.5f - 100)) * Matrix4::Rotation(20.0f, Vector3(1, 0, 0)));
+	root->SetModelScale(Vector3(10.0f, 10.0f, 10.0f));
+	root->SetBoundingRadius(100.0f);
+	root->SetMesh(stone);
+	root->SetDiffuseTex(stoneTex);
+	root->SetNormalTex(stoneBump);
 	for (int i = 0; i < 10; ++i) {
 		SceneNode* s = new SceneNode();
 		s->SetColour(Vector4(1.0f, 1.0f, 1.0f, 255.0f));
-		s->SetTransform(Matrix4::Translation(Vector3(heightmapSize.x * 0.5, heightmapSize.y * 0.6f, heightmapSize.z * 0.5f + (100.0f * i))) * Matrix4::Rotation(20.0f * i, Vector3(1, 0, 0)));
+		s->SetTransform(Matrix4::Translation(Vector3(0, 0,100.0f * (i+1))) * Matrix4::Rotation(20.0f * i, Vector3(1, 0, 0)));
 		s->SetModelScale(Vector3(10.0f, 10.0f, 10.0f));
 		s->SetBoundingRadius(100.0f);
 		s->SetMesh(stone);
@@ -168,7 +175,6 @@ Renderer::Renderer(Window& parent) :OGLRenderer(parent) {
 	waterCycle = 0.0f;
 	intensity = 0.1f;
 	MultipleLight = false;
-	autocamera = true;
 	init = true;
 
 }
@@ -218,7 +224,6 @@ void Renderer::GenerateScreenTexture(GLuint& into, bool depth) {
 void Renderer::UpdateScene(float dt) {
 	camera->UpdateCamera(dt);
 	viewMatrix = camera->BuildViewMatrix();
-	frameFrustum.FromMatrix(projMatrix * viewMatrix);
 
 	root->Update(dt);
 	waterRotate += dt * 2.0f;
@@ -227,8 +232,6 @@ void Renderer::UpdateScene(float dt) {
 }
 
 void Renderer::RenderScene() {
-	BuildNodeLists(root);
-	SortNodeLists();
 
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	FillBuffers();
@@ -273,6 +276,9 @@ void Renderer::FillBuffers() {
 
 	heightMap->Draw();
 
+	frameFrustum.FromMatrix(projMatrix * viewMatrix);
+	BuildNodeLists(root);
+	SortNodeLists();
 	DrawNodes();
 
 	DrawWater();
@@ -415,17 +421,34 @@ void Renderer::DrawWater() {
 
 void Renderer::BuildNodeLists(SceneNode* from) {
 	if (frameFrustum.InsideFrustum(*from)) {
-		Vector3 dir = from->GetWorldTransform().GetPositionVector() - camera->GetPosition();
-		from->SetCameraDistance(Vector3::Dot(dir, dir));
+		if (!from->getIsInList()) {
+			Vector3 dir = from->GetWorldTransform().GetPositionVector() - camera->GetPosition();
+			from->SetCameraDistance(Vector3::Dot(dir, dir));
 
-		if (from->GetColour().w < 1.0f) {
-			transparentNodeList.push_back(from);
+			if (from->GetColour().w < 1.0f) {
+				transparentNodeList.push_back(from);
+				from->setInList(true);
+			}
+			else {
+				nodeList.push_back(from);
+				from->setInList(true);
+			}
 		}
-		else {
-			nodeList.push_back(from);
+	}
+	else {
+		if (from->getIsInList()) {
+			if (from->GetColour().w < 1.0f) {
+				transparentNodeList.erase(std::find(transparentNodeList.begin(), transparentNodeList.end(), from));
+				from->setInList(false);
+			}
+			else {
+				nodeList.erase(std::find(nodeList.begin(), nodeList.end(), from));
+				from->setInList(false);
+			}
 		}
 
 	}
+
 	for (vector<SceneNode*>::const_iterator i = from->GetChildIteratorStart(); i != from->GetChildIteratorEnd(); ++i) {
 		BuildNodeLists((*i));
 

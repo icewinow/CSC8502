@@ -38,6 +38,13 @@ public:
 	static bool CompareByCameraDistance(SceneNode* a, SceneNode* b) {
 		return(a->distanceFromCamera < b->distanceFromCamera) ? true : false;
 	}
+	
+	void setInList(bool inList) {
+		isInList = inList;
+	}
+	bool getIsInList() {
+		return isInList;
+	}
 
 	void AddChild(SceneNode* s);
 
@@ -59,5 +66,6 @@ protected:
 	float distanceFromCamera;
 	GLuint diffTex;
 	GLuint normTex;
+	bool isInList;
 
 };

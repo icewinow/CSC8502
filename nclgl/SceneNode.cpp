@@ -9,6 +9,7 @@ SceneNode::SceneNode(Mesh* mesh, Vector4 colour) {
 	distanceFromCamera = 0.0f;
 	diffTex = 0;
 	normTex = 0;
+	isInList = false;
 }
 
 SceneNode::~SceneNode(void) {
